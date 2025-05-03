@@ -1,7 +1,67 @@
-import Link from 'next/link'
-import React from 'react'
+'use client';
+import { useFormik } from 'formik';
+import React from 'react';
+import * as Yup from 'yup';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().required('Password is required')
+    .matches(/[a-z]/, 'lowercase letter is required')
+    .matches(/[A-Z]/, 'uppercase letter is required')
+    .matches(/[0-9]/, 'number is required')
+    .matches(/\W/, 'special character is required')
+    .min(8, 'Password must be at least 8 characters long'),
+  confirmPassword: Yup.string().required('Confirm Password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+});
 
 const Signup = () => {
+
+  const router = useRouter();
+
+  // initializing formik
+  const signForm = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      console.log(values);
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/user/add`,
+          values
+        );
+
+        console.log(res.data);
+        console.log(res.status);
+        console.log(res.statusText);
+        toast.success('User Registered Successfully!');
+
+        router.push('/login');
+        resetForm();
+
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
+        setSubmitting(false);
+      }
+
+      // send values to backend
+    },
+    validationSchema: SignupSchema
+  });
+
   return (
     <div className='flex justify-center items-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-12 min-h-[80vh]'>
       <div className='space-y-8 w-full max-w-md'>
@@ -14,7 +74,7 @@ const Signup = () => {
           </p>
         </div>
 
-        <form className="space-y-6 bg-white shadow-lg mt-8 p-8 rounded-xl">
+        <form onSubmit={signForm.handleSubmit} className="space-y-6 bg-white shadow-lg mt-8 p-8 rounded-xl">
           <div className="space-y-4 rounded-md">
             <div className="relative">
               <label className="block mb-1 font-medium text-gray-700 text-sm">Name</label>
@@ -22,13 +82,13 @@ const Signup = () => {
                 type="text"
                 name="name"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                // onChange={signupForm.handleChange}
-                // value={signupForm.values.name}
+                onChange={signupForm.handleChange}
+                value={signupForm.values.name}
                 placeholder="Enter your name"
               />
-              {/* {signupForm.touched.name && signupForm.errors.name && (
+              {signupForm.touched.name && signupForm.errors.name && (
                 <p className="mt-1 text-red-500 text-sm">{signupForm.errors.name}</p>
-              )} */}
+              )}
             </div>
 
             <div className="relative">
@@ -37,13 +97,13 @@ const Signup = () => {
                 type="email"
                 name="email"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                // onChange={signupForm.handleChange}
-                // value={signupForm.values.email}
+                onChange={signupForm.handleChange}
+                value={signupForm.values.email}
                 placeholder="Enter your email"
               />
-              {/* {signupForm.touched.email && signupForm.errors.email && (
+              {signupForm.touched.email && signupForm.errors.email && (
                 <p className="mt-1 text-red-500 text-sm">{signupForm.errors.email}</p>
-              )} */}
+              )}
             </div>
 
             <div className="relative">
@@ -52,13 +112,13 @@ const Signup = () => {
                 type="password"
                 name="password"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                // onChange={signupForm.handleChange}
-                // value={signupForm.values.password}
+                onChange={signupForm.handleChange}
+                value={signupForm.values.password}
                 placeholder="Create a password"
               />
-              {/* {signupForm.touched.password && signupForm.errors.password && (
+              {signupForm.touched.password && signupForm.errors.password && (
                 <p className="mt-1 text-red-500 text-sm">{signupForm.errors.password}</p>
-              )} */}
+              )}
             </div>
 
             <div className="relative">
@@ -67,13 +127,13 @@ const Signup = () => {
                 type="password"
                 name="confirmPassword"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                // onChange={signupForm.handleChange}
-                // value={signupForm.values.confirmPassword}
+                onChange={signupForm.handleChange}
+                value={signupForm.values.confirmPassword}
                 placeholder="Confirm your password"
               />
-              {/* {signupForm.touched.confirmPassword && signupForm.errors.confirmPassword && (
+              {signupForm.touched.confirmPassword && signupForm.errors.confirmPassword && (
                 <p className="mt-1 text-red-500 text-sm">{signupForm.errors.confirmPassword}</p>
-              )} */}
+              )}
             </div>
           </div>
 
@@ -98,4 +158,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Signup;
