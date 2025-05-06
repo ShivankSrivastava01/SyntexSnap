@@ -1,5 +1,5 @@
 const express = require('express');
-const Model = require('../models/UserModel');
+const Model = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -20,6 +20,55 @@ router.post('/add', (req, res) => {
             }
             console.log(err);
         });
+});
+
+// Get user's favorites
+router.get('/favorites/:userId', async (req, res) => {
+    try {
+        const user = await Model.findById(req.params.userId).populate('favorites');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user.favorites);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching favorites', error: err });
+    }
+});
+
+// Add to favorites
+router.post('/favorites/:userId/:extensionId', async (req, res) => {
+    try {
+        const user = await Model.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        if (!user.favorites.includes(req.params.extensionId)) {
+            user.favorites.push(req.params.extensionId);
+            await user.save();
+        }
+        
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ message: 'Error adding to favorites', error: err });
+    }
+});
+
+// Remove from favorites
+router.delete('/favorites/:userId/:extensionId', async (req, res) => {
+    try {
+        const user = await Model.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        user.favorites = user.favorites.filter(id => id.toString() !== req.params.extensionId);
+        await user.save();
+        
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ message: 'Error removing from favorites', error: err });
+    }
 });
 
 // getall
@@ -58,8 +107,6 @@ router.get('/getbyemail/:email', (req, res) => {
         });
 });
 
-
-
 // getbyid
 router.get('/getbyid/:id', (req, res) => {
     Model.findById(req.params.id)
@@ -70,7 +117,6 @@ router.get('/getbyid/:id', (req, res) => {
             res.status(500).json(err);
         });
 });
-
 
 // update
 router.put('/update/:id', (req, res) => {
@@ -94,13 +140,12 @@ router.delete('/delete/:id', (req, res) => {
         });
 });
 
-
 router.post('/authenticate', (req, res) => {
     Model.findOne(req.body)
         .then((result) => {
             if (result) {
                 // login success - generate token
-                const { _id, name, email } = result;
+                const { _id, name, email, city, avatar } = result;
                 const payload = { _id, name, email };
 
                 jwt.sign(
@@ -111,8 +156,12 @@ router.post('/authenticate', (req, res) => {
                         if(err){
                             console.log(err);
                             res.status(500).json({ message: 'Error generating token' });
-                        }else{
-                            res.status(200).json({token});
+                        } else {
+                            // Send back token and user data
+                            res.status(200).json({
+                                token,
+                                user: { _id, name, email, city, avatar }
+                            });
                         }
                     }
                 )

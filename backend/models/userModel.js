@@ -6,6 +6,7 @@ const mySchema = new Schema({
     password: { type: String, required: true },
     city: { type: String, default: 'unknown' },
     avatar: { type: String },
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'extensions' }],
     createdAt: { type: Date, default: Date.now }
 })
 

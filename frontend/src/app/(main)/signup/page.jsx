@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -82,12 +83,12 @@ const Signup = () => {
                 type="text"
                 name="name"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                onChange={signupForm.handleChange}
-                value={signupForm.values.name}
+                onChange={signForm.handleChange}
+                value={signForm.values.name}
                 placeholder="Enter your name"
               />
-              {signupForm.touched.name && signupForm.errors.name && (
-                <p className="mt-1 text-red-500 text-sm">{signupForm.errors.name}</p>
+              {signForm.touched.name && signForm.errors.name && (
+                <p className="mt-1 text-red-500 text-sm">{signForm.errors.name}</p>
               )}
             </div>
 
@@ -97,12 +98,12 @@ const Signup = () => {
                 type="email"
                 name="email"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                onChange={signupForm.handleChange}
-                value={signupForm.values.email}
+                onChange={signForm.handleChange}
+                value={signForm.values.email}
                 placeholder="Enter your email"
               />
-              {signupForm.touched.email && signupForm.errors.email && (
-                <p className="mt-1 text-red-500 text-sm">{signupForm.errors.email}</p>
+              {signForm.touched.email && signForm.errors.email && (
+                <p className="mt-1 text-red-500 text-sm">{signForm.errors.email}</p>
               )}
             </div>
 
@@ -112,12 +113,12 @@ const Signup = () => {
                 type="password"
                 name="password"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                onChange={signupForm.handleChange}
-                value={signupForm.values.password}
+                onChange={signForm.handleChange}
+                value={signForm.values.password}
                 placeholder="Create a password"
               />
-              {signupForm.touched.password && signupForm.errors.password && (
-                <p className="mt-1 text-red-500 text-sm">{signupForm.errors.password}</p>
+              {signForm.touched.password && signForm.errors.password && (
+                <p className="mt-1 text-red-500 text-sm">{signForm.errors.password}</p>
               )}
             </div>
 
@@ -127,12 +128,12 @@ const Signup = () => {
                 type="password"
                 name="confirmPassword"
                 className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent`}
-                onChange={signupForm.handleChange}
-                value={signupForm.values.confirmPassword}
+                onChange={signForm.handleChange}
+                value={signForm.values.confirmPassword}
                 placeholder="Confirm your password"
               />
-              {signupForm.touched.confirmPassword && signupForm.errors.confirmPassword && (
-                <p className="mt-1 text-red-500 text-sm">{signupForm.errors.confirmPassword}</p>
+              {signForm.touched.confirmPassword && signForm.errors.confirmPassword && (
+                <p className="mt-1 text-red-500 text-sm">{signForm.errors.confirmPassword}</p>
               )}
             </div>
           </div>
