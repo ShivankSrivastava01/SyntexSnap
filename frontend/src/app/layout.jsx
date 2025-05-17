@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { usePathname } from 'next/navigation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,15 +21,19 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // Only show Navbar/Footer for main (public) routes
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const isUserOrAdmin = pathname.startsWith('/user') || pathname.startsWith('/admin');
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
+        {!isUserOrAdmin && <Navbar />}
         <Toaster />
         {children}
-        <Footer />
+        {!isUserOrAdmin && <Footer />}
       </body>
     </html>
   );

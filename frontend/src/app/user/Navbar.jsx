@@ -14,6 +14,12 @@ const Navbar = () => {
         setUser(userData);
     }, []);
 
+    useEffect(() => {
+        if (!user) {
+            router.push('/login');
+        }
+    }, [user, router]);
+
     const handleLogout = () => {
         localStorage.removeItem('user');
         router.push('/');
@@ -28,7 +34,6 @@ const Navbar = () => {
     const isActive = (path) => pathname === path;
 
     if (!user) {
-        router.push('/login');
         return null;
     }
 

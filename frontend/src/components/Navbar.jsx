@@ -13,6 +13,12 @@ const Navbar = () => {
         setUser(loggedUser);
     }, []);
 
+    useEffect(() => {
+        if (!user) {
+            router.push('/login');
+        }
+    }, [user, router]);
+
     const handleLogout = () => {
         localStorage.removeItem('user');
         setUser(null);
