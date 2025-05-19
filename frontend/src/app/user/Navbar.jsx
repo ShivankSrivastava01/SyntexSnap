@@ -37,8 +37,8 @@ const Navbar = () => {
     };
 
     const navItems = [
+        { href: "/browse-extensions", label: "Extensions", icon: Package },
         { href: "/user/profile", label: "Profile", icon: User },
-        // { href: "/user/my-extensions", label: "My Extensions", icon: Package },
         { href: "/user/favorites", label: "Favorites", icon: Star },
     ];
 

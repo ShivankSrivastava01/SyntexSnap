@@ -8,22 +8,22 @@ const Navbar = () => {
     const router = useRouter();
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const loggedUser = JSON.parse(localStorage.getItem('user'));
-        setUser(loggedUser);
-    }, []);
+    // useEffect(() => {
+    //     const loggedUser = JSON.parse(localStorage.getItem('user'));
+    //     setUser(loggedUser);
+    // }, []);
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        }
-    }, [user, router]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         router.push('/login');
+    //     }
+    // }, [user, router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        setUser(null);
-        router.push('/');
-    };
+    // const handleLogout = () => {
+    //     localStorage.removeItem('user');
+    //     setUser(null);
+    //     router.push('/');
+    // };
 
     const navLinks = [
         { href: "/", label: "Home" },
@@ -47,7 +47,7 @@ const Navbar = () => {
             <div className='mx-auto container'>
                 <nav className="flex md:flex-row flex-col justify-between items-center px-6 py-4">
                     <div className="bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-bold text-3xl text-transparent">
-                        VSCode Marketplace
+                        SyntexSnap
                     </div>
                     <div className='space-x-2 md:space-x-6 mt-4 md:mt-0'>
                         {navLinks.map((link) => (

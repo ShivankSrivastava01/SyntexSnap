@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -47,7 +48,7 @@ const ManageExtension = () => {
             {extensions.map((extension) => (
               <tr key={extension._id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{extension.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{extension.description}</td>
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{extension.description}</td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{extension.version}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button

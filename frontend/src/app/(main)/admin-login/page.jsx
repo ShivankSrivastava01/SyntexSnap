@@ -20,7 +20,7 @@ const AdminLogin = () => {
             const res = await axios.post('http://localhost:5000/admin/login', form);
             toast.success('Login successful!');
             localStorage.setItem('admin', JSON.stringify(res.data));
-            router.push('/admin');
+            router.push('/admin/profile');
         } catch (err) {
             toast.error(
                 err?.response?.data?.message || 'Invalid credentials or server error.'
