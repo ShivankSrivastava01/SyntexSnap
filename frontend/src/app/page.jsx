@@ -84,7 +84,7 @@ const Home = () => {
   return (
     <>
 
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="flex flex-col min-h-screen">
         <main className="flex-grow mx-auto px-4 py-8 container">
