@@ -22,6 +22,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   // Only show Navbar/Footer for main (public) routes
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
   const isUserOrAdmin = pathname.startsWith('/user') || pathname.startsWith('/admin');
@@ -31,10 +32,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {!isUserOrAdmin && <Navbar />}
+        {/* {!isUserOrAdmin && <Navbar />} */}
         <Toaster />
         {children}
-        {!isUserOrAdmin && <Footer />}
+        {/* {!isUserOrAdmin && <Footer />} */}
       </body>
     </html>
   );

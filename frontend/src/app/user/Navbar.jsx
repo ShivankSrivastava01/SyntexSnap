@@ -10,15 +10,26 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        setUser(userData);
+        try {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                const parsedUser = JSON.parse(userData);
+                console.log('Parsed user data:', parsedUser);
+                // Simply set the parsed user data since it's already in the correct format
+                setUser(parsedUser);
+            }
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+            // router.push('/login');
+        }
     }, []);
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        }
-    }, [user, router]);
+
+    // useEffect(() => {
+    //     if (!user) {
+    //         router.push('/login');
+    //     }
+    // }, [user, router]);
 
     const handleLogout = () => {
         localStorage.removeItem('user');
@@ -27,7 +38,7 @@ const Navbar = () => {
 
     const navItems = [
         { href: "/user/profile", label: "Profile", icon: User },
-        { href: "/user/my-extensions", label: "My Extensions", icon: Package },
+        // { href: "/user/my-extensions", label: "My Extensions", icon: Package },
         { href: "/user/favorites", label: "Favorites", icon: Star },
     ];
 
@@ -54,11 +65,10 @@ const Navbar = () => {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                                        isActive(item.href)
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-700 hover:bg-gray-100'
-                                    }`}
+                                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive(item.href)
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'text-gray-700 hover:bg-gray-100'
+                                        }`}
                                 >
                                     <Icon className="w-4 h-4 mr-2" />
                                     {item.label}
